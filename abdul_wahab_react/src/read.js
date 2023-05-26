@@ -48,6 +48,7 @@ useEffect(()=>{
       });
   };
   
+    const [name, Setname] = useState("");
 
   // Display the result on the page
   return (
@@ -56,21 +57,39 @@ useEffect(()=>{
         <h2>question</h2>
       </center>
 
-      {info.map(
-        (data) => (
-          (<Frame course={data.question} />)
-        )
-      )}
+      {info.map((data) => (
+        <Frame course={data.question} />
+      ))}
       <div>
         <center>
           <h2>answer</h2>
         </center>
-        {infoans.map(
-          (data) => (
-            (<Frame course={data.ans} />)
-          )
-        )}
+        {infoans.map((data) => (
+          <Frame course={data.ans} />
+        ))}
       </div>
+      <center>
+        <h1>Your answer</h1>
+        <form
+          style={{ marginTop: "20px" }}
+          onSubmit={(event) => {
+            // sub(event);
+          }}
+        >
+          <input
+            type="text"
+            placeholder="your question"
+            onChange={(e) => {
+              Setname(e.target.value);
+            }}
+          />
+          <br />
+          <br />
+
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+      </center>
     </div>
   );
 };
@@ -78,15 +97,17 @@ useEffect(()=>{
 // Define how each display entry will be structured
 const Frame = ({ course }) => {
   const [question, setQuestion] = useState("");
+
   console.log(question)
   console.log(course );
   return (
     <center>
       <div className="div">
-        <p>Course : {course}</p>
-        <Button variant="text" onClick={()=>setQuestion(course)}>
+        <p>{course}</p>
+        <Button variant="text" onClick={() => setQuestion(course)}>
           click
         </Button>
+       
       </div>
     </center>
   );

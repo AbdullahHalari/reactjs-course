@@ -1,9 +1,11 @@
 import db from "./firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Firestore = () => {
-  const [name, Setname] = useState("");
-  
+  const [name, Setname] = useState('');
+  const [info, setInfo] = useState([]);
+  const [question,setQuestion] = useState('');
+  console.log(question)
   const sub = (e) => {
     e.preventDefault();
 
@@ -21,12 +23,38 @@ const Firestore = () => {
         console.error("Error adding document: ", error);
       });
   };
-
+const Fetchdata = () => {
+  db.collection("question")
+    .doc("qno1")
+    .collection("question")
+    .get()
+    .then((querySnapshot) => {
+      // Loop through the data and store
+      // it in array to display
+      querySnapshot.forEach((element) => {
+        var data = element.data();
+        setInfo((arr) => [...arr, data]);
+      });
+    });
+};
+useEffect(()=>{
+  Fetchdata();
+},[])
   return (
     <div>
       <center>
+        <h1>Questions</h1>
+        {info.map((data) => (
+          <div>
+            <p>{data.question}</p>
+            {/* <p>{data.question}</p> */}
+            <button onClick={()=>setQuestion(data.question)}>see answer</button>
+          </div>
+        ))}
+        <h1>your question</h1>
+
         <form
-          style={{ marginTop: "200px" }}
+          style={{ marginTop: "20px" }}
           onSubmit={(event) => {
             sub(event);
           }}
@@ -40,7 +68,7 @@ const Firestore = () => {
           />
           <br />
           <br />
-          
+
           <br />
           <button type="submit">Submit</button>
         </form>
